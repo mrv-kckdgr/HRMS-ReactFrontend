@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Icon, Menu, Table } from "semantic-ui-react";
 import JobPostingService from "../services/jobPostingService";
-import { Button, Card, Image } from 'semantic-ui-react'
+import { Button, Card, Image } from "semantic-ui-react";
 
 export default function JobPostingList() {
   //Hook
   //Life cycle hook
   const [jobPostings, setJobPostings] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     let jobPostingService = new JobPostingService();
     //başarılı olursa then kısmı çalışacak
-    jobPostingService.getJobPostings().then(result=>setJobPostings(result.data.data))
+    jobPostingService
+      .getJobPostings()
+      .then((result) => setJobPostings(result.data.data));
     //bunu yapınca data geldi
-  }, [])
+  }, []);
   return (
     <div>
       <Table celled>
@@ -31,8 +33,12 @@ export default function JobPostingList() {
         <Table.Body>
           {jobPostings.map((jobPosting) => (
             <Table.Row key={jobPosting.id}>
-              <Table.Cell>{jobPosting.employerCompanyName.companyName}</Table.Cell>
-              <Table.Cell>{jobPosting.employerCompanyName.webAddress}</Table.Cell>              
+              <Table.Cell>
+                {jobPosting.employerCompanyName.companyName}
+              </Table.Cell>
+              <Table.Cell>
+                {jobPosting.employerCompanyName.webAddress}
+              </Table.Cell>
               <Table.Cell>{jobPosting.jobPositionPosition.position}</Table.Cell>
               <Table.Cell>{jobPosting.numberOfPosition}</Table.Cell>
               <Table.Cell>{jobPosting.releaseDate}</Table.Cell>
@@ -60,36 +66,39 @@ export default function JobPostingList() {
           </Table.Row>
         </Table.Footer>
       </Table>
-      {jobPostings.map((jobPosting)=>(
-      <Card.Group>        
+      {jobPostings.map((jobPosting) => (
+        <Card.Group>
           <Card fluid>
-          <Card.Content>
-            <Image
-              floated='right'
-              size='mini'
-              src='/images/avatar/large/steve.jpg'
-            />
-            <Card.Header>{jobPosting.jobPositionPosition.position}</Card.Header>
-            <Card.Meta>{jobPosting.employerCompanyName.companyName}</Card.Meta>
-            <Card.Description>
-            {jobPosting.employerCompanyName.webAddress} <strong>{jobPosting.numberOfPosition}</strong>
-            </Card.Description>
-          </Card.Content>
-          <Card.Content extra>
-            <div className='ui two buttons'>
-              <Button basic color='green'>
-                Approve
-              </Button>
-              <Button basic color='red'>
-                Decline
-              </Button>
-            </div>
-          </Card.Content>
-        </Card>
+            <Card.Content>
+              <Image
+                floated="right"
+                size="mini"
+                src="/images/avatar/large/steve.jpg"
+              />
+              <Card.Header>
+                {jobPosting.jobPositionPosition.position}
+              </Card.Header>
+              <Card.Meta>
+                {jobPosting.employerCompanyName.companyName}
+              </Card.Meta>
+              <Card.Description>
+                {jobPosting.employerCompanyName.webAddress}{" "}
+                <strong>{jobPosting.numberOfPosition}</strong>
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+              <div className="ui two buttons">
+                <Button basic color="green">
+                  Approve
+                </Button>
+                <Button basic color="red">
+                  Decline
+                </Button>
+              </div>
+            </Card.Content>
+          </Card>
         </Card.Group>
-        ))}
-         
-    
+      ))}
     </div>
   );
 }
