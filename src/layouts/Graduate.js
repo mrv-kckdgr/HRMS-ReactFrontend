@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Checkbox, Table } from "semantic-ui-react";
-import GraduateService from "../services/graduate";
+import GraduateService from "../services/graduateService";
 
 export default function Graduate() {
   const [graduates, setGraduates] = useState([]);

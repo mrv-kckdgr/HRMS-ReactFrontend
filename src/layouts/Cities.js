@@ -26,12 +26,8 @@ export default function Cities() {
               
             </Table.Row>
           ))}
-        </Table.Body>
-
-        
+        </Table.Body>        
       </Table>
-
-
 
   </div>;
 }

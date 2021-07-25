@@ -1,7 +1,9 @@
 import axios from "axios";
+import {proxy} from "../../package.json"
 
 export default class CityService {
     getCities() {
-        return axios.get("http://localhost:8083/api/cities/getall")
+        let newUrl = proxy + "cities/getall"
+        return axios.get(newUrl);
     }
 }

@@ -1,7 +1,21 @@
 import axios from "axios";
+import {proxy} from "../../package.json"
 
 export default class CandidateService{
+
     getCandidates(){
-        return axios.get("http://localhost:8083/api/candidates/getall")
+        let newUrl = proxy + "candidates/getall"
+        return axios.get(newUrl);
+    }
+
+    add(candidate){
+        let newUrl = proxy + "candidates/add"
+        console.log(candidate)
+        return axios.post(newUrl, candidate);
+    }
+
+    logiCandidate(email, password){
+        let newUrl = proxy + "candidates/loginCandidate?email=";
+        return axios.post(newUrl,  {email}, "&password=", {password});
     }
 }

@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Icon, Menu, Table } from "semantic-ui-react";
+import { Header, Icon, Menu, Table } from "semantic-ui-react";
 import JobPostingService from "../services/jobPostingService";
 import { Button, Card, Image } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
-export default function JobPostingList() {
-  //Hook
-  //Life cycle hook
+export default function JobPostingApprovedList() {
+
   const [jobPostings, setJobPostings] = useState([]);
 
   useEffect(() => {
     let jobPostingService = new JobPostingService();
-    //başarılı olursa then kısmı çalışacak
     jobPostingService
-      .getJobPostings()
+      .getByStatus()
       .then((result) => setJobPostings(result.data.data));
-    //bunu yapınca data geldi
   }, []);
   return (
     <div>
+      <Header as='h3' block>
+        Approved Job Postings
+      </Header>
       <Table celled>
         <Table.Header>
           <Table.Row>
@@ -34,12 +35,12 @@ export default function JobPostingList() {
           {jobPostings.map((jobPosting) => (
             <Table.Row key={jobPosting.id}>
               <Table.Cell>
-                {jobPosting.employerCompanyName.companyName}
+                <Link to={`/job-posting-list/${jobPosting.id}`}>{jobPosting.employer.companyName}</Link>
               </Table.Cell>
               <Table.Cell>
-                {jobPosting.employerCompanyName.webAddress}
+                {jobPosting.employer.webAddress}
               </Table.Cell>
-              <Table.Cell>{jobPosting.jobPositionPosition.position}</Table.Cell>
+              <Table.Cell>{jobPosting.jobPosition.position}</Table.Cell>
               <Table.Cell>{jobPosting.numberOfPosition}</Table.Cell>
               <Table.Cell>{jobPosting.releaseDate}</Table.Cell>
               <Table.Cell>{jobPosting.applicationDeadline}</Table.Cell>
@@ -76,13 +77,13 @@ export default function JobPostingList() {
                 src="/images/avatar/large/steve.jpg"
               />
               <Card.Header>
-                {jobPosting.jobPositionPosition.position}
+                {jobPosting.jobPosition.position}
               </Card.Header>
               <Card.Meta>
-                {jobPosting.employerCompanyName.companyName}
+                {jobPosting.employer.companyName}
               </Card.Meta>
               <Card.Description>
-                {jobPosting.employerCompanyName.webAddress}{" "}
+                {jobPosting.employer.webAddress}{" "}
                 <strong>{jobPosting.numberOfPosition}</strong>
               </Card.Description>
             </Card.Content>

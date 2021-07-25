@@ -36,7 +36,7 @@ img.ui.image {
 
 .dropdown {
     /* Whatever color  you want */
-    background-color: #b6c71a;
+    /* background-color: #b6c71a; */
     border-radius: 10%;
 }
 
@@ -49,3 +49,20 @@ a {
     color: rgba(0, 0, 0, .87)!important;
     font-weight: 400;
 }
+
+.ui.dropdown{
+    color: #000 !important;
+    margin-bottom: 10px;
+}
+
+Button{
+    margin-top: 25px;
+}
+
+.ui.icon{
+    float: left;
+}
+
+/* .ui.two.buttons{
+    margin: 0 auto;
+} */
