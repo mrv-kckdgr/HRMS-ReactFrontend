@@ -23,6 +23,15 @@ export default class JobPostingService {
         return axios.post(newUrl, jobPosting);
     }
 
+    updateJobPostingDto(jobPosting){
+        //http://localhost:8083/api/jobpostings/addJobPostingDto
+        console.log("job posting")
+        console.log(jobPosting)
+        let newUrl = proxy + "jobpostings/updateJobPostingDto";
+        console.log(newUrl)        
+        return axios.post(newUrl, jobPosting);
+    }
+
     //Aktif iş ilanları listesi (Employer tarafından durumu true olan iş ilanları)
     getByStatus(){
         //http://localhost:8083/api/jobpostings/getByStatus?status=true

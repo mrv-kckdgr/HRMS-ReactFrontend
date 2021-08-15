@@ -27,12 +27,15 @@ export default function SignInForm() {
     <form
       onSubmit={formik.handleSubmit}>
       <Header as='h3' block color="purple">
-        Candidate or Employer Sign In
+        Candidate | Employee | Employer Sign In
       </Header>
 
 
       <Link to="/candidate/candidate-login">
         <Button color="purple" type="submit">Candidate</Button>
+      </Link>
+      <Link to="/employee/employee-login">
+        <Button color="purple" type="submit">Employee</Button>
       </Link>
       <Link to="/employer/employer-login">
         <Button color="purple" type="submit">Employer</Button>

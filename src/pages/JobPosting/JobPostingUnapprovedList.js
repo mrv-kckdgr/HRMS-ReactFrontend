@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Header, Icon } from "semantic-ui-react";
-import JobPostingService from "../services/jobPostingService";
-import { Button, Card, Label } from "semantic-ui-react";
+import { Header, Icon, Button, Card, Label } from "semantic-ui-react";
+import JobPostingService from "../../services/jobPostingService";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export default function JobPostingUnapprovedList() {
 
@@ -36,13 +36,28 @@ export default function JobPostingUnapprovedList() {
 
   return (
     <div>
-      <Header as='h3' block>
+
+      <Header as='h3' block color="teal">
+        All Employees
+      </Header>
+
+      <Link to="/employee/employee-list">
+        <Button color="purple" type="submit">Employees List</Button>
+      </Link>
+
+      <Header as='h3' block color="green">
         All Job Postings (Unapproved/Approved)
       </Header>
 
       {jobPostings.map((jobPosting) => (
         <Card.Group>
+
           <Card fluid>
+            <Link to={`/employee/jobPosting-update/${jobPosting.id}`}>
+              <Button fluid>
+                <Icon name="edit" />
+                Update</Button>
+            </Link>
             <Card.Content>
               <Icon name='location arrow' color="teal" right className="ui.icon"
                 size="big" /> {jobPosting.cityName}

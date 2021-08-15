@@ -1,17 +1,66 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import CityService from "../services/cityService";
-import JobPositionService from "../services/jobPositionService";
-import WorkingTimeService from "../services/workingTimeService";
-import WorkingTypeService from "../services/workingTypeService";
-import { Form, Button, Label, Header } from "semantic-ui-react"
-import { toast } from "react-toastify";
 import * as Yup from "yup"
-import { proxy } from "../../package.json"
-import JobPostingService from "../services/jobPostingService"
+import { Form, Button, Label, Header, Icon } from "semantic-ui-react";
+import { toast } from "react-toastify";
+import { useParams } from 'react-router';
+import JobPostingService from '../../services/jobPostingService';
+import CityService from '../../services/cityService';
+import WorkingTimeService from '../../services/workingTimeService';
+import WorkingTypeService from '../../services/workingTypeService';
+import JobPositionService from '../../services/jobPositionService';
+
+export default function JobPostingUpdate() {
+
+    let { id } = useParams()
+
+    const [jobPosting, setJobPosting] = useState({});
+
+    useEffect(() => {
+        let jobPostingService = new JobPostingService()
+        jobPostingService.getById(id).then(result => setJobPosting(result.data.data));
+    }, [])
+
+    const validationSchema = Yup.object({
+        applicationDeadline: Yup.date().required("Application deadline information is required!"),
+        maxSalary: Yup.number().required("Maximum salary information is required!"),
+        minSalary: Yup.number().required("Minimum salary information is required!"),
+        numberOfPosition: Yup.number().required("Position piece information is required!"),
+        releaseDate: Yup.date().required("Release date information is required"),
+        jobPositionId: Yup.number().required("Job position field is required!"),
+        cityId: Yup.number().required("City field is required!"),
+        employerId: Yup.number().required("Employer field is required!"),
+        workingTimeId: Yup.number().required("Working time is required!"),
+        workingTypeId: Yup.number().required("Working type field is required")
+    });
+
+    const initialValues = {
+        applicationDeadline: "", maxSalary: "", minSalary: "", numberOfPosition: "", releaseDate: "",
+        cityId: "", jobPositionId: "", workingTypeId: "", workingTimeId: "", status: false, employerId: 1,
+    };
 
 
-export default function JobPostingAdd() {
+    const onSubmit = values => {
+        alert(JSON.stringify(values, null, 2));
+
+        let jobPostingService = new JobPostingService();
+
+        jobPostingService
+            .updateJobPostingDto(values)
+            .then(result => {
+                toast.success("Job posting has been successfully added.")
+                console.log(result);
+                console.log(result.data);
+                console.log("başarılı")
+            }, [])
+
+    };
+
+    const formik = useFormik({
+        initialValues,
+        validationSchema,
+        onSubmit
+    });
 
     const [cities, setCities] = useState([]);
 
@@ -79,72 +128,13 @@ export default function JobPostingAdd() {
     }))
 
 
-    const validationSchema = Yup.object({
-        applicationDeadline: Yup.date().required("Application deadline information is required!"),
-        maxSalary: Yup.number().required("Maximum salary information is required!"),
-        minSalary: Yup.number().required("Minimum salary information is required!"),
-        numberOfPosition: Yup.number().required("Position piece information is required!"),
-        releaseDate: Yup.date().required("Release date information is required"),
-        jobPositionId: Yup.number().required("Job position field is required!"),
-        cityId: Yup.number().required("City field is required!"),
-        employerId: Yup.number().required("Employer field is required!"),
-        workingTimeId: Yup.number().required("Working time is required!"),
-        workingTypeId: Yup.number().required("Working type field is required")
-    });
-
-    const initialValues = {
-        applicationDeadline: "", maxSalary: "", minSalary: "", numberOfPosition: "", releaseDate: "",
-        cityId: "", jobPositionId: "", workingTypeId: "", workingTimeId: "", status: false, employerId: 1,
-    };
-
-    const onSubmit = values => {
-        alert(JSON.stringify(values, null, 2));
-        console.log(proxy);
-        console.log(values);
-
-
-        let jobPosting = {
-            applicationDeadline: values.applicationDeadline,
-            maxSalary: values.maxSalary,
-            minSalary: values.minSalary,
-            numberOfPosition: values.numberOfPosition,
-            releaseDate: values.releaseDate,
-            city: { id: values.cityId },
-            jobPosition: { id: values.jobPositionId },
-            workingType: { id: values.workingTypeId },
-            workingTime: { id: values.workingTimeId },
-            status: values.status,
-            employer: { id: values.employerId }
-        };
-        console.log(jobPosting);
-        let jobPostingService = new JobPostingService();
-
-        jobPostingService
-            .addJobPostingDto(values)
-            .then(result => {
-                toast.success("Job posting has been successfully added.")
-                console.log(result);
-                console.log(result.data);
-                console.log("başarılı")
-            }, [])
-
-    };
-
-    const formik = useFormik({
-        initialValues,
-        validationSchema,
-        onSubmit
-    });
-
-
-
-
     return (
+
         <form
             onSubmit={formik.handleSubmit}>
 
             <Header as='h3' block color="purple">
-                Add Job Posting
+                Update Job Posting
             </Header>
             <Form.Select
                 fluid
@@ -164,34 +154,34 @@ export default function JobPostingAdd() {
 
             {/* <label htmlFor="maxSalary">Max Salary</label> */}
             <Form.Input label="Max Salary" fluid id="maxSalary" name="maxSalary" type="text" placeholder="Max Salary" onChange={formik.handleChange} onBlur={formik.handleBlur}
-                value={formik.values.maxSalary} />
+                defaultValue={jobPosting.maxSalary} />
             {formik.touched.maxSalary && formik.errors.maxSalary ? (
                 <Label pointing basic color="red" content={formik.errors.maxSalary}></Label>
             ) : null}
 
             <Form.Input label="Min Salary" fluid id="minSalary" name="minSalary" type="text" placeholder="Min Salary" onChange={formik.handleChange} onBlur={formik.handleBlur}
-                value={formik.values.minSalary} />
+                defaultValue={jobPosting.minSalary} />
             {formik.touched.minSalary && formik.errors.minSalary ? (
                 <Label pointing basic color="red" content={formik.errors.minSalary}></Label>
             ) : null}
 
 
             <Form.Input label="Release Date" fluid id="releaseDate" name="releaseDate" type="date" placeholder="Release Date" onChange={formik.handleChange} onBlur={formik.handleBlur}
-                value={formik.values.releaseDate} />
+                defaultValue={jobPosting.releaseDate} />
             {formik.touched.releaseDate && formik.errors.releaseDate ? (
                 <Label pointing basic color="red" content={formik.errors.releaseDate}></Label>
             ) : null}
 
 
             <Form.Input label="Application Deadline" fluid id="releaseDate" name="applicationDeadline" type="date" placeholder="Application Deadline" onChange={formik.handleChange} onBlur={formik.handleBlur}
-                value={formik.values.applicationDeadline} />
+                defaultValue={jobPosting.applicationDeadline} />
             {formik.touched.applicationDeadline && formik.errors.applicationDeadline ? (
                 <Label pointing basic color="red" center content={formik.errors.applicationDeadline}></Label>
             ) : null}
 
 
             <Form.Input label="Number Of Position" fluid id="numberOfPosition" name="numberOfPosition" type="text" placeholder="Number Of Position" onChange={formik.handleChange} onBlur={formik.handleBlur}
-                value={formik.values.numberOfPosition} />
+                defaultValue={jobPosting.numberOfPosition} />
             {formik.touched.numberOfPosition && formik.errors.numberOfPosition ? (
                 <Label pointing basic color="red" content={formik.errors.numberOfPosition}></Label>
             ) : null}
@@ -223,7 +213,7 @@ export default function JobPostingAdd() {
                 value={formik.values.workingTimeId}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
                 onBlur={formik.handleBlur}
-            
+
             />
             {formik.touched.workingTimeId && formik.errors.workingTimeId ? (
                 <Label pointing basic color="red" content={formik.errors.workingTimeId}></Label>
@@ -239,15 +229,16 @@ export default function JobPostingAdd() {
                 value={formik.values.workingTypeId}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
                 onBlur={formik.handleBlur}
-            
+
             />
             {formik.touched.workingTypeId && formik.errors.workingTypeId ? (
                 <Label pointing basic color="red" center aligned content={formik.errors.workingTypeId}></Label>
             ) : null}
 
 
-            <Button color="purple" type="submit">Save</Button>
+            <Button color="purple" type="submit">
+                <Icon name="edit" />
+                Update</Button>
         </form>
-
-    );
+    )
 }

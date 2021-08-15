@@ -2,11 +2,11 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from "yup"
 import { Button, Header } from 'semantic-ui-react';
-import MTextInput from '../utilities/customFormControls/MTextInput';
-import CandidateService from "../services/candidateService";
+import MTextInput from '../../utilities/customFormControls/MTextInput';
+import CandidateService from "../../services/candidateService";
 import { toast } from "react-toastify";
 
-export default function CandidateAdd() {
+export default function CandidateUpdate() {
 
     const initialValues = {
         firstName: "", lastName: "", nationalNumber: "", email: "", password: "", passwordRepeat: "", dateOfBirth: ""
@@ -37,7 +37,7 @@ export default function CandidateAdd() {
             onSubmit={(candidate) => {
                 console.log(candidate);
                 let candidateService = new CandidateService();
-                candidateService.add(candidate)
+                candidateService.update(candidate)
                     .then(result => {
                         toast.success("Candidate has been successfully added.")
                         console.log(result);
@@ -52,13 +52,13 @@ export default function CandidateAdd() {
                 <Header as='h3' block color="purple">
                     Candidate Sign Up
                 </Header>
-                <MTextInput name="firstName" placeholder="First Name" />
-                <MTextInput name="lastName" placeholder="Last Name" />
-                <MTextInput name="nationalNumber" placeholder="National Number" />
-                <MTextInput name="dateOfBirth" placeholder="Date of Birth" />
-                <MTextInput name="email" placeholder="Email" />
-                <MTextInput name="password" placeholder="Password" />
-                <MTextInput name="passwordRepeat" placeholder="Password Repeat" />
+                <label>First Name</label><MTextInput name="firstName" placeholder="First Name"/>
+                <label>Last Name</label><MTextInput name="lastName" placeholder="Last Name" />
+                <label>National Number</label><MTextInput name="nationalNumber" placeholder="National Number" />
+                <label>Date of Birth</label><MTextInput name="dateOfBirth" placeholder="Date of Birth" />
+                <label>Email</label><MTextInput name="email" placeholder="Email" />
+                <label>Password</label><MTextInput name="password" placeholder="Password" />
+                <label>Password Repeat</label><MTextInput name="passwordRepeat" placeholder="Password Repeat" />
                 <Button color="purple" type="submit">Save</Button>
             </Form>
 

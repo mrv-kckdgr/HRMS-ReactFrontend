@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Icon } from "semantic-ui-react";
-import CandidateService from "../services/candidateService";
+import CandidateService from "../../services/candidateService";
 
 export default function CandidateList() {
 

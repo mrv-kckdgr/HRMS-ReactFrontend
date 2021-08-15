@@ -3,27 +3,27 @@ import { useFormik } from 'formik';
 import { Form, Button, Label, Header } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import JobPositionService from "../services/jobPositionService";
+import JobPositionService from "../../services/jobPositionService";
 
 
-export default function JobPositionAdd() {    
+export default function JobPositionAdd() {
 
-    const validationSchema = Yup.object({        
-        position: Yup.string().required("Position information is required!"),               
-        
+    const validationSchema = Yup.object({
+        position: Yup.string().required("Position information is required!"),
+
     });
 
     const initialValues = {
-      position: "",
+        position: "",
     };
 
     const onSubmit = values => {
         alert(JSON.stringify(values, null, 2));
-        console.log(values);        
-        
+        console.log(values);
+
         let jobPositionService = new JobPositionService();
-    
-        jobPositionService.addJobPosition(values)   
+
+        jobPositionService.addJobPosition(values)
             .then(result => {
                 toast.success("Job Position has been successfully added.")
                 console.log(result);
@@ -39,19 +39,19 @@ export default function JobPositionAdd() {
         onSubmit
     });
 
-    return (        
+    return (
         <form
             onSubmit={formik.handleSubmit}>
             <Header as='h3' block color="purple">
-              Add Job Position
+                Add Job Position
             </Header>
-            
+
 
             <Form.Input label="Job Position" fluid id="position" name="position" type="text" placeholder="Job Position" onChange={formik.handleChange} onBlur={formik.handleBlur}
                 value={formik.values.position} />
-            {formik.touched.position && formik.errors.position ? (                
+            {formik.touched.position && formik.errors.position ? (
                 <Label pointing basic color="red" content={formik.errors.position}></Label>
-            ) : null}           
+            ) : null}
 
             <Button color="purple" type="submit">Save</Button>
         </form>

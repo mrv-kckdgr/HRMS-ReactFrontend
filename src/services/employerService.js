@@ -9,8 +9,10 @@ export default class EmployerService{
     }
 
     loginEmployer(email, password){
-        let newUrl = proxy + "employers/loginEmployer?email=";
-        return axios.post(newUrl,  {email}, "&password=", {password});
+        let newUrl = proxy + "employers/loginEmployer?email=" + email + "&password=" + password;
+        console.log(newUrl)
+        //return axios.post(newUrl,  {email}, "&password=", {password});
+        return axios.post(newUrl);
     }
 
     addEmployer(employer){

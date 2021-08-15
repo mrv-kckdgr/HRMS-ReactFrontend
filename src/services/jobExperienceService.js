@@ -11,4 +11,16 @@ export default class JobExperienceService{
         let newUrl = proxy + "jobexperiences/addJobExperienceDto";
         return axios.post(newUrl, jobExperience);
     }
+
+    getByResumeId(id){
+        //http://localhost:8083/api/jobexperiences/getbyresumeid?resumeId=1
+        let newUrl = proxy + "jobexperiences/getbyresumeid?resumeId=" + id;
+        return axios.get(newUrl)
+    }
+
+    getById(id){
+        // http://localhost:8083/api/jobexperiences/getbyid?id=1
+        let newUrl = proxy + "jobexperiences/getbyid?id=" + id;
+        return axios.get(newUrl);
+    }
 }

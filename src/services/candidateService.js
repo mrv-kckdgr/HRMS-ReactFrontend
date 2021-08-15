@@ -18,4 +18,13 @@ export default class CandidateService{
         let newUrl = proxy + "candidates/loginCandidate?email=";
         return axios.post(newUrl,  {email}, "&password=", {password});
     }
+
+    getById(id){
+        let newUrl = proxy + "candidates/getbyid?id=" + id;
+        return axios.get(newUrl);
+    }
+
+    // update(candidate){
+    //     let 
+    // }
 }

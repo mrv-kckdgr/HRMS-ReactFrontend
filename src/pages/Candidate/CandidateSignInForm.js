@@ -3,10 +3,10 @@ import { useFormik } from 'formik';
 import { Form, Button, Label, Header } from "semantic-ui-react"
 import { toast } from "react-toastify";
 import * as Yup from "yup"
-import EmployerService from "../services/employerService"
+import CandidateService from "../../services/candidateService"
 
 
-export default function EmployerSignInForm() {
+export default function CandidateSignInForm() {
 
     const validationSchema = Yup.object({
         email: Yup.string().email().required("Email information is required!"),
@@ -21,24 +21,20 @@ export default function EmployerSignInForm() {
         alert(JSON.stringify(values, null, 2));
         
 
-        let loginModel = {  
+        let loginModel = {
             email: values.email,
             password: values.password,            
         };
         console.log(loginModel);
-        let employerService = new EmployerService();
+        let candidateService = new CandidateService();
     
-        employerService
-      .loginEmployer(values.email, values.password)        
+        candidateService.loginCandidate(values.email, values.password)        
             .then(result => {
                 toast.success("Login completed successfully")
                 console.log(result);
                 console.log(result.data);
                 console.log("başarılı")
-            }, []).catch(result => {
-                console.log(result)
-                toast.success("Login completed successfully")
-            })
+            }, [])
     };
 
     const formik = useFormik({
@@ -52,7 +48,7 @@ export default function EmployerSignInForm() {
         <form
             onSubmit={formik.handleSubmit}>            
             <Header as='h3' block color="olive">
-                Employer Login
+                Candidate Login
             </Header>           
 
 

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import CityService from "../services/cityService";
-import JobPositionService from "../services/jobPositionService";
-import WorkingTimeService from "../services/workingTimeService";
-import WorkingTypeService from "../services/workingTypeService";
+import CityService from "../../services/cityService";
+import JobPositionService from "../../services/jobPositionService";
+import WorkingTimeService from "../../services/workingTimeService";
+import WorkingTypeService from "../../services/workingTypeService";
 import { Form, Button, Label, Header } from "semantic-ui-react"
 import { toast } from "react-toastify";
 import * as Yup from "yup"
-import {proxy} from "../../package.json"
-import JobPostingService from "../services/jobPostingService"
+import { proxy } from "../../../package.json"
+import JobPostingService from "../../services/jobPostingService"
 
 
-export default function ResumeAdd() {
+export default function JobPostingAdd() {
 
     const [cities, setCities] = useState([]);
 
@@ -78,7 +78,7 @@ export default function ResumeAdd() {
         value: jobPosition.id
     }))
 
-    //Doğrulama yapmamızı sağlar
+
     const validationSchema = Yup.object({
         applicationDeadline: Yup.date().required("Application deadline information is required!"),
         maxSalary: Yup.number().required("Maximum salary information is required!"),
@@ -101,15 +101,9 @@ export default function ResumeAdd() {
         alert(JSON.stringify(values, null, 2));
         console.log(proxy);
         console.log(values);
-        // axios.post("http://localhost:8083/api/jobpostings/add", values)
-        // .then(result => {
-        //     //toast.success("İş ilanı başarılı bir şekilde eklendi.")
-        //     console.log(result);
-        //     console.log(result.data);
-        //     console.log("başarılı")
-        //   }, [])      
 
-        let jobPosting = {  // sol taraftakiler swagger'da kayıt eklerken gelen değişkenler sağ taraftakiler React'te kullandığımız
+
+        let jobPosting = {
             applicationDeadline: values.applicationDeadline,
             maxSalary: values.maxSalary,
             minSalary: values.minSalary,
@@ -124,10 +118,9 @@ export default function ResumeAdd() {
         };
         console.log(jobPosting);
         let jobPostingService = new JobPostingService();
-    
-    jobPostingService
-      .addJobPostingDto(values)
-        //axios.post(proxy + "http://localhost:8083/api/jobpostings/add", jobPosting)
+
+        jobPostingService
+            .addJobPostingDto(values)
             .then(result => {
                 toast.success("Job posting has been successfully added.")
                 console.log(result);
@@ -149,9 +142,9 @@ export default function ResumeAdd() {
     return (
         <form
             onSubmit={formik.handleSubmit}>
-            {/* <label htmlFor="jobPositionId"></label> */}
-            <Header as='h3' block>
-                Resume Add
+
+            <Header as='h3' block color="purple">
+                Add Job Posting
             </Header>
             <Form.Select
                 fluid
@@ -161,10 +154,10 @@ export default function ResumeAdd() {
                 options={jobPositionsOptions}
                 value={formik.values.jobPositionId}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
-                //error={formik.touched.jobPositionId && formik.errors.jobPositionId ? formik.errors.jobPositionId : null}
+            //error={formik.touched.jobPositionId && formik.errors.jobPositionId ? formik.errors.jobPositionId : null}
 
             />
-            {formik.touched.jobPositionId && formik.errors.jobPositionId ? (                
+            {formik.touched.jobPositionId && formik.errors.jobPositionId ? (
                 <Label pointing basic color="red" content={formik.errors.jobPositionId}></Label>
             ) : null}
 
@@ -172,43 +165,39 @@ export default function ResumeAdd() {
             {/* <label htmlFor="maxSalary">Max Salary</label> */}
             <Form.Input label="Max Salary" fluid id="maxSalary" name="maxSalary" type="text" placeholder="Max Salary" onChange={formik.handleChange} onBlur={formik.handleBlur}
                 value={formik.values.maxSalary} />
-            {formik.touched.maxSalary && formik.errors.maxSalary ? (                
+            {formik.touched.maxSalary && formik.errors.maxSalary ? (
                 <Label pointing basic color="red" content={formik.errors.maxSalary}></Label>
             ) : null}
 
-            {/* <label htmlFor="minSalary">Min Salary</label> */}
             <Form.Input label="Min Salary" fluid id="minSalary" name="minSalary" type="text" placeholder="Min Salary" onChange={formik.handleChange} onBlur={formik.handleBlur}
                 value={formik.values.minSalary} />
-            {formik.touched.minSalary && formik.errors.minSalary ? (                
+            {formik.touched.minSalary && formik.errors.minSalary ? (
                 <Label pointing basic color="red" content={formik.errors.minSalary}></Label>
             ) : null}
 
-            {/* <label htmlFor="releaseDate">Release Date</label> */}
+
             <Form.Input label="Release Date" fluid id="releaseDate" name="releaseDate" type="date" placeholder="Release Date" onChange={formik.handleChange} onBlur={formik.handleBlur}
                 value={formik.values.releaseDate} />
             {formik.touched.releaseDate && formik.errors.releaseDate ? (
                 <Label pointing basic color="red" content={formik.errors.releaseDate}></Label>
             ) : null}
 
-            {/* <label htmlFor="releaseDate">Application Deadline</label> */}
+
             <Form.Input label="Application Deadline" fluid id="releaseDate" name="applicationDeadline" type="date" placeholder="Application Deadline" onChange={formik.handleChange} onBlur={formik.handleBlur}
                 value={formik.values.applicationDeadline} />
-            {formik.touched.applicationDeadline && formik.errors.applicationDeadline ? (                
+            {formik.touched.applicationDeadline && formik.errors.applicationDeadline ? (
                 <Label pointing basic color="red" center content={formik.errors.applicationDeadline}></Label>
             ) : null}
 
-            {/* <label htmlFor="numberOfPosition">Number Of Position</label> */}
+
             <Form.Input label="Number Of Position" fluid id="numberOfPosition" name="numberOfPosition" type="text" placeholder="Number Of Position" onChange={formik.handleChange} onBlur={formik.handleBlur}
                 value={formik.values.numberOfPosition} />
-            {formik.touched.numberOfPosition && formik.errors.numberOfPosition ? (                
+            {formik.touched.numberOfPosition && formik.errors.numberOfPosition ? (
                 <Label pointing basic color="red" content={formik.errors.numberOfPosition}></Label>
             ) : null}
 
 
 
-
-
-            {/* <label htmlFor="cityId"></label> */}
             <Form.Select
                 fluid
                 label="City"
@@ -218,16 +207,13 @@ export default function ResumeAdd() {
                 value={formik.values.cityId}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
                 onBlur={formik.handleBlur}
-                //error={formik.touched.cityId && formik.errors.cityId ? formik.errors.cityId : null}
-
             />
-            {formik.touched.cityId && formik.errors.cityId ? (                
+            {formik.touched.cityId && formik.errors.cityId ? (
                 <Label pointing basic color="red" content={formik.errors.cityId}></Label>
             ) : null}
 
 
 
-            {/* <label htmlFor="workingTimeId"></label> */}
             <Form.Select
                 fluid
                 label="Working Time"
@@ -237,14 +223,13 @@ export default function ResumeAdd() {
                 value={formik.values.workingTimeId}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
                 onBlur={formik.handleBlur}
-                //error={formik.touched.workingTimeId && formik.errors.workingTimeId ? formik.errors.workingTimeId : null}
 
             />
-            {formik.touched.workingTimeId && formik.errors.workingTimeId ? (                
+            {formik.touched.workingTimeId && formik.errors.workingTimeId ? (
                 <Label pointing basic color="red" content={formik.errors.workingTimeId}></Label>
             ) : null}
 
-            {/* <label htmlFor="workingTypeId"></label> */}
+
             <Form.Select
                 fluid
                 label="Working Type"
@@ -254,13 +239,11 @@ export default function ResumeAdd() {
                 value={formik.values.workingTypeId}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
                 onBlur={formik.handleBlur}
-                //error={formik.touched.workingTypeId && formik.errors.workingTypeId ? formik.errors.workingTypeId : null}
 
             />
-            {formik.touched.workingTypeId && formik.errors.workingTypeId ? (                
+            {formik.touched.workingTypeId && formik.errors.workingTypeId ? (
                 <Label pointing basic color="red" center aligned content={formik.errors.workingTypeId}></Label>
             ) : null}
-
 
 
             <Button color="purple" type="submit">Save</Button>

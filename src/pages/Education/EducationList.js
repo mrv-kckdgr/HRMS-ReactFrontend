@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react/cjs/react.development";
 import { Table, Menu, Icon, Divider } from "semantic-ui-react";
-import EducationService from "../services/educationService";
+import EducationService from "../../services/educationService";
 
 export default function EducationList() {
   const [educations, setEducations] = useState([]);

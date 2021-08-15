@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useParams } from "react-router"
-import JobPostingService from "../services/jobPostingService";
+import JobPostingService from "../../services/jobPostingService";
 import { Card, Icon, Label, Button } from "semantic-ui-react";
 
 export default function JobPostingDetail() {
