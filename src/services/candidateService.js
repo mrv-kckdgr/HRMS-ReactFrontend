@@ -24,7 +24,9 @@ export default class CandidateService{
         return axios.get(newUrl);
     }
 
-    // update(candidate){
-    //     let 
-    // }
+    update(candidate){
+        let newUrl = proxy + "candidates/update"
+        console.log(candidate)
+        return axios.post(newUrl, candidate);
+    }
 }

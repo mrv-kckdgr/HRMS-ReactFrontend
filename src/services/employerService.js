@@ -3,6 +3,7 @@ import {proxy} from "../../package.json"
 
 
 export default class EmployerService{
+    
     getEmployers(){
         let newUrl = proxy + "employers/getall";
         return axios.get(newUrl);
@@ -10,8 +11,6 @@ export default class EmployerService{
 
     loginEmployer(email, password){
         let newUrl = proxy + "employers/loginEmployer?email=" + email + "&password=" + password;
-        console.log(newUrl)
-        //return axios.post(newUrl,  {email}, "&password=", {password});
         return axios.post(newUrl);
     }
 

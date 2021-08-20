@@ -15,26 +15,17 @@ export default class JobPostingService {
     }
 
     addJobPostingDto(jobPosting){
-        //http://localhost:8083/api/jobpostings/addJobPostingDto
-        console.log("job posting")
-        console.log(jobPosting)
-        let newUrl = proxy + "jobpostings/addJobPostingDto";
-        console.log(newUrl)        
+        let newUrl = proxy + "jobpostings/addJobPostingDto";       
         return axios.post(newUrl, jobPosting);
     }
 
     updateJobPostingDto(jobPosting){
-        //http://localhost:8083/api/jobpostings/addJobPostingDto
-        console.log("job posting")
-        console.log(jobPosting)
-        let newUrl = proxy + "jobpostings/updateJobPostingDto";
-        console.log(newUrl)        
+        let newUrl = proxy + "jobpostings/updateJobPostingDto";   
         return axios.post(newUrl, jobPosting);
     }
 
     //Aktif iş ilanları listesi (Employer tarafından durumu true olan iş ilanları)
     getByStatus(){
-        //http://localhost:8083/api/jobpostings/getByStatus?status=true
         let newUrl = proxy + "jobpostings/getByStatus?status=true";
         return axios.get(newUrl);
     }
@@ -42,7 +33,6 @@ export default class JobPostingService {
 
     // İş ilanını aktif hale getirme
     activeJobPosting(id){
-        //http://localhost:8083/api/jobpostings/activeJobPosting?id=3
         console.log(id);
         let newUrl = proxy + "jobpostings/activejobposting?id=" + id;
         console.log(newUrl)
@@ -51,9 +41,17 @@ export default class JobPostingService {
 
     // İş ilanını pasif hale getirme
     closeJobPosting(id){
-        //http://localhost:8083/api/jobpostings/closeJobPosting?id=3
         let newUrl = proxy + "jobpostings/closejobposting?id=";
         return axios.post(newUrl + id)
     }
-    
+
+    getByCityAndJobPosition(cityId, jobPositionId){
+        let newUrl = proxy + "jobpostings/getByCityAndJobPosition?cityId="+ cityId + "&jobPositionId=" + jobPositionId;
+        return axios.get(newUrl);
+    }
+
+    getByCityAndJobPositionAndWorkingTimeAndWorkingType(cityId, jobPositionId, workingTimeId, workingTypeId){
+        let newUrl = proxy + "jobpostings/getByCityAndJobPositionAndWorkingTimeAndWorkingType?cityId=" + cityId + "&jobPositionId=" + jobPositionId + "&workingTimeId=" + workingTimeId + "&workingTypeId=" + workingTypeId;
+        return axios.get(newUrl);
+    }
 }

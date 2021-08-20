@@ -63,6 +63,7 @@ Button{
     float: left;
 }
 
-/* .ui.two.buttons{
-    margin: 0 auto;
-} */
+.ui.icon.input{
+    margin-left: 5%;
+    width: 300px;
+}

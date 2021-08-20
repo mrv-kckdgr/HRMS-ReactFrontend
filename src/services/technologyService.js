@@ -13,20 +13,17 @@ export default class TechnologyService{
         return axios.post(newUrl, technology);
     }
 
-    getByResumeId(id){
-        //http://localhost:8083/api/technologies/getbyresumeid?resumeId=1
+    getByResumeId(id){       
         let newUrl = proxy + "technologies/getbyresumeid?resumeId=" + id;
         return axios.get(newUrl)
     }
 
-    getById(id){
-        // http://localhost:8083/api/technologies/getbyid?id=1
+    getById(id){        
         let newUrl = proxy + "technologies/getbyid?id=" + id;
         return axios.get(newUrl);
     }
 
-    updateTechnologyDto(technology){
-        //http://localhost:8083/api/technologies/update
+    updateTechnologyDto(technology){        
         let newUrl = proxy + "technologies/updateTechnologyDto";
         return axios.post(newUrl, technology);
     }

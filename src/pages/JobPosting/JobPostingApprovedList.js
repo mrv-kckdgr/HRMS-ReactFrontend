@@ -5,8 +5,16 @@ import { Button, Card, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import FavoriteJobPostingService from "../../services/favoriteJobPostingService";
 import { toast } from "react-toastify";
+import JobPostingSearch from "./JobPostingSearch";
 
 export default function JobPostingApprovedList() {
+
+  // arama sayfası için bu kodlar eklendi
+  const [values, setFilter] = useState([])
+  const filterJobPosting = (values) => {
+    setFilter(values);
+    console.log("burası liste", values)
+  }
 
   const [jobPostings, setJobPostings] = useState([]);
 
@@ -16,6 +24,18 @@ export default function JobPostingApprovedList() {
       .getByStatus()
       .then((result) => setJobPostings(result.data.data));
   }, []);
+
+  useEffect(() => {
+    let cityId = values.cityId;
+    let jobPositionId = values.jobPositionId;
+    let workingTimeId = values.workingTimeId;
+    let workingTypeId = values.workingTypeId;
+
+    let jobPostingService = new JobPostingService();
+    jobPostingService.getByCityAndJobPositionAndWorkingTimeAndWorkingType(cityId, jobPositionId, workingTimeId, workingTypeId)
+      .then((result) => setJobPostings(result.data.data));
+  }, [values])
+
 
   function addFavoriteJobPosting(id) {
     let favoriteJobPostingService = new FavoriteJobPostingService();
@@ -27,7 +47,7 @@ export default function JobPostingApprovedList() {
       .then(result => {
         toast.success("FavoriteJobPosting has been successfully added.")
         console.log(result)
-      }, [])
+      })
 
   }
   return (
@@ -35,6 +55,8 @@ export default function JobPostingApprovedList() {
       <Header as='h3' block color="orange">
         Approved Job Postings
       </Header>
+
+      <JobPostingSearch filterJobPosting={filterJobPosting} />
 
       {jobPostings.map((jobPosting) => (
 
