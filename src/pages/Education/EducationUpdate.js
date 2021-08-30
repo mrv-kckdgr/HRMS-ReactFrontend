@@ -12,17 +12,16 @@ import { Link } from 'react-router-dom';
 export default function EducationUpdate() {
 
     let { id } = useParams()
-    
-    
 
-    const [education, setEducation] = useState({});
+
+
+    const [education, setEducation] = useState({ });
 
     useEffect(() => {
         let educationService = new EducationService();
         educationService.getById(id)
             .then((result) => setEducation(result.data.data));
-            console.log(education)    
-            
+        console.log(education)
     }, []);
 
     const [graduateTypes, setgraduateTypes] = useState([]);
@@ -41,8 +40,6 @@ export default function EducationUpdate() {
         value: graduateType.id
     }))
 
-
-
     const validationSchema = Yup.object({
         resumeId: Yup.number().required("Resume information is required!"),
         schoolName: Yup.string().required("School Name information is required!"),
@@ -52,16 +49,21 @@ export default function EducationUpdate() {
         graduateTypeId: Yup.number().required("GraduateType information is required"),
     });
 
-    const initialValues = {
+    let initialValues = {
         id, resumeId: 1, schoolName: "", schoolDepartment: "", startingDate: "", endDate: "",
         graduateTypeId: "",
-    };
+    }
+
+    useEffect(() => {
+        initialValues = {
+            id: education.id, resumeId: education.resumeId, schoolName: education.schoolName, schoolDepartment: education.schoolDepartment, startingDate: education.startingDate, endDate: education.endDate,
+            graduateTypeId: education.graduateType?.id,
+        }
+    }, [education])
 
     const onSubmit = values => {
         alert(JSON.stringify(values, null, 2));
         console.log(values);
-
-
 
         let educationService = new EducationService();
 
@@ -83,8 +85,9 @@ export default function EducationUpdate() {
 
     return (
         <form
-            onSubmit={formik.handleSubmit}>
-            { }
+            onSubmit={formik.handleSubmit}
+            enableReinitialize={true}
+        >
             <Header as='h3' block color="purple">
                 Education Update
             </Header>
@@ -95,8 +98,7 @@ export default function EducationUpdate() {
                 placeholder='Select Graduate Type'
                 name="graduateTypeId"
                 options={graduateTypesOptions}
-                value={education.graduateTypeId}
-                
+                value={education.graduateType?.id}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
             />
             {formik.touched.graduateTypeId && formik.errors.graduateTypeId ? (
@@ -112,7 +114,8 @@ export default function EducationUpdate() {
 
 
             <Form.Input label="School Department" fluid id="schoolDepartment" name="schoolDepartment" type="text" placeholder="School Department" onChange={formik.handleChange} onBlur={formik.handleBlur}
-                defaultValue={education.schoolDepartment} />
+                defaultValue={education.schoolDepartment}
+            />
             {formik.touched.schoolDepartment && formik.errors.schoolDepartment ? (
                 <Label pointing basic color="red" content={formik.errors.schoolDepartment}></Label>
             ) : null}

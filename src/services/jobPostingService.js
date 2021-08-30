@@ -4,8 +4,15 @@ import {proxy} from "../../package.json"
 export default class JobPostingService {
 
     // Tüm iş ilanları listesi
+    // Dto
     getJobPostings() {
         let newUrl = proxy + "jobpostings/getjobpostingwithdetails";
+        return axios.get(newUrl);
+    }
+
+    // JobPosting Table
+    getAllJobPostings() {
+        let newUrl = proxy + "jobpostings/getall";
         return axios.get(newUrl);
     }
 
@@ -52,6 +59,12 @@ export default class JobPostingService {
 
     getByCityAndJobPositionAndWorkingTimeAndWorkingType(cityId, jobPositionId, workingTimeId, workingTypeId){
         let newUrl = proxy + "jobpostings/getByCityAndJobPositionAndWorkingTimeAndWorkingType?cityId=" + cityId + "&jobPositionId=" + jobPositionId + "&workingTimeId=" + workingTimeId + "&workingTypeId=" + workingTypeId;
+        return axios.get(newUrl);
+    }
+
+    getAllPageableJobPostings(pageNo, pageSize){
+        //http://localhost:8083/api/jobpostings/getAllPageableJobPostings?pageNo=1&pageSize=2
+        let newUrl = proxy + "jobpostings/getAllPageableJobPostings?pageNo=" + pageNo + "&pageSize=" + pageSize;
         return axios.get(newUrl);
     }
 }

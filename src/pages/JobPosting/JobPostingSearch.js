@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Segment, Form, Label } from "semantic-ui-react";
+import { Button, Container, Segment, Form, Label, Header } from "semantic-ui-react";
 import { useFormik } from 'formik';
 import * as Yup from "yup"
 import CityService from '../../services/cityService';
@@ -99,6 +99,10 @@ export default function JobPostingSearch({ filterJobPosting }) {
 
     return (
         <div>
+            <Header as='h3' block color="olive">
+                Filter Job Postings
+            </Header>
+
             <form
                 onSubmit={formik.handleSubmit}>
                 <Segment>

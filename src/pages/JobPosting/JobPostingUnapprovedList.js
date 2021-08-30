@@ -3,15 +3,30 @@ import { Header, Icon, Button, Card, Label } from "semantic-ui-react";
 import JobPostingService from "../../services/jobPostingService";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import JobPostingPageable from "./JobPostingPageable";
+import JobPostingSearch from "./JobPostingSearch";
 
 export default function JobPostingUnapprovedList() {
+
+  // arama sayfası için bu kodlar eklendi
+  const [values, setFilter] = useState([])
+  const filterJobPosting = (values) => {
+    setFilter(values);
+    console.log("İş ilanları listesi:", values)
+  }
+
+  const [valuesPageable, setPageable] = useState([])
+  const pagebleJobPosting = (valuesPageable) => {
+    setPageable(valuesPageable);
+    console.log("İş ilanları listesi: ", valuesPageable)
+  }
 
   const [jobPostings, setJobPostings] = useState([]);
 
   useEffect(() => {
     let jobPostingService = new JobPostingService();
     jobPostingService
-      .getJobPostings()
+      .getAllJobPostings()
       .then((result) => setJobPostings(result.data.data));
   }, []);
 
@@ -33,6 +48,41 @@ export default function JobPostingUnapprovedList() {
       }, [])
   }
 
+  useEffect(() => {
+    let cityId = values.cityId;
+    let jobPositionId = values.jobPositionId;
+    let workingTimeId = values.workingTimeId;
+    let workingTypeId = values.workingTypeId;
+
+    let jobPostingService = new JobPostingService();
+    jobPostingService.getByCityAndJobPositionAndWorkingTimeAndWorkingType(cityId, jobPositionId, workingTimeId, workingTypeId)
+      .then((result) => {
+        setJobPostings(result.data.data)
+        toast.success("Job postings list has been successfully filtered.")
+      });
+  }, [values])
+
+
+  useEffect(() => {
+    let pageNo = valuesPageable.pageNo;
+    let pageSize = valuesPageable.pageSize;
+    let jobPostingService = new JobPostingService();
+    jobPostingService.getAllPageableJobPostings(pageNo, pageSize)
+      .then((result) => {
+        setJobPostings(result.data.data)
+        toast.success("Job postings list has been successfully pageable.")
+      });
+  }, [valuesPageable])
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const [jobPostingsPerPage] = useState(10)
+
+  // Get current jobPostings
+  const indexOfLastJobPosting = currentPage*jobPostingsPerPage;
+  const indexOfFirstJobPosting = indexOfLastJobPosting - jobPostingsPerPage;
+  const currentJobPostings = jobPostings.slice(indexOfFirstJobPosting, indexOfLastJobPosting)
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
   return (
     <div>
@@ -42,8 +92,25 @@ export default function JobPostingUnapprovedList() {
       </Header>
 
       <Link to="/employee/employee-list">
-        <Button color="purple" type="submit">Employees List</Button>
+        <Button color="purple" type="submit">Employees List</Button><br/><br/>
       </Link>
+
+      <Header as='h3' block color="blue">
+        All Employers
+      </Header>
+
+      <Link to="/employee/employer-list">
+        <Button color="yellow" type="submit">Employers List</Button><br/><br/>
+      </Link>
+
+      <JobPostingSearch filterJobPosting={filterJobPosting} />
+
+      {/* <JobPostingPageable pagebleJobPosting={pagebleJobPosting}/> */}
+
+      <JobPostingPageable pagebleJobPosting={pagebleJobPosting} totalJobPostings={jobPostings.length} paginate={paginate}/>
+
+
+     
 
       <Header as='h3' block color="green">
         All Job Postings (Unapproved/Approved)
@@ -60,7 +127,7 @@ export default function JobPostingUnapprovedList() {
             </Link>
             <Card.Content>
               <Icon name='location arrow' color="teal" right className="ui.icon"
-                size="big" /> {jobPosting.cityName}
+                size="big" /> {jobPosting.city.cityName}
 
               <Card.Header>
                 {jobPosting.jobPosition.position}
@@ -71,8 +138,8 @@ export default function JobPostingUnapprovedList() {
               <Card.Description>
                 Web Address: {jobPosting.employer.webAddress}{" "}<br />
                 Number of position: <strong>{jobPosting.numberOfPosition}</strong><br />
-                Working Type: <strong>{jobPosting.workingType}</strong><br />
-                Working Time: <strong>{jobPosting.workingTime}</strong><br />
+                Working Type: <strong>{jobPosting.workingType.workingType}</strong><br />
+                Working Time: <strong>{jobPosting.workingTime.workingTime}</strong><br />
                 Status: {jobPosting.status == true ? <Label style={{ backgroundColor: 'blue', alignSelf: 'flex-start', color: '#fff' }}>
                   Aktif
                 </Label> : <Label style={{ backgroundColor: 'red', alignSelf: 'flex-start', color: '#fff' }}>

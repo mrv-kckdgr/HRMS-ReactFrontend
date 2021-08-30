@@ -14,7 +14,7 @@ export default function JobPostingUpdate() {
 
     let { id } = useParams()
 
-    const [jobPosting, setJobPosting] = useState({});
+    const [jobPosting, setJobPosting] = useState({ });
 
     useEffect(() => {
         let jobPostingService = new JobPostingService()
@@ -34,10 +34,17 @@ export default function JobPostingUpdate() {
         workingTypeId: Yup.number().required("Working type field is required")
     });
 
-    const initialValues = {
+    let initialValues = {
         applicationDeadline: "", maxSalary: "", minSalary: "", numberOfPosition: "", releaseDate: "",
         cityId: "", jobPositionId: "", workingTypeId: "", workingTimeId: "", status: false, employerId: 1,
     };
+
+    useEffect(() => {
+        initialValues = {
+            applicationDeadline: "", maxSalary: "", minSalary: "", numberOfPosition: "", releaseDate: "",
+            cityId: jobPosting.city?.id, jobPositionId: jobPosting.position?.id, workingTypeId: jobPosting.workingType?.id, workingTimeId: jobPosting.workingTime?.id, status: false, employerId: 1,
+        }
+    }, [jobPosting])
 
 
     const onSubmit = values => {
@@ -53,7 +60,6 @@ export default function JobPostingUpdate() {
                 console.log(result.data);
                 console.log("başarılı")
             }, [])
-
     };
 
     const formik = useFormik({
@@ -77,7 +83,6 @@ export default function JobPostingUpdate() {
         value: city.id
     }))
 
-
     const [workingTimes, setWorkingTimes] = useState([]);
 
     useEffect(() => {
@@ -92,7 +97,6 @@ export default function JobPostingUpdate() {
         text: time.workingTime,
         value: time.id
     }))
-
 
     const [workingTypes, setWorkingTypes] = useState([]);
 
@@ -110,7 +114,6 @@ export default function JobPostingUpdate() {
         value: type.id
     }))
 
-
     const [jobPositions, setJobPositions] = useState([]);
 
     useEffect(() => {
@@ -127,7 +130,6 @@ export default function JobPostingUpdate() {
         value: jobPosition.id
     }))
 
-
     return (
 
         <form
@@ -142,17 +144,13 @@ export default function JobPostingUpdate() {
                 placeholder='Select JobPosition'
                 name="jobPositionId"
                 options={jobPositionsOptions}
-                value={formik.values.jobPositionId}
+                value={jobPosting.jobPosition?.id}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
-            //error={formik.touched.jobPositionId && formik.errors.jobPositionId ? formik.errors.jobPositionId : null}
-
             />
             {formik.touched.jobPositionId && formik.errors.jobPositionId ? (
                 <Label pointing basic color="red" content={formik.errors.jobPositionId}></Label>
             ) : null}
 
-
-            {/* <label htmlFor="maxSalary">Max Salary</label> */}
             <Form.Input label="Max Salary" fluid id="maxSalary" name="maxSalary" type="text" placeholder="Max Salary" onChange={formik.handleChange} onBlur={formik.handleBlur}
                 defaultValue={jobPosting.maxSalary} />
             {formik.touched.maxSalary && formik.errors.maxSalary ? (
@@ -165,13 +163,11 @@ export default function JobPostingUpdate() {
                 <Label pointing basic color="red" content={formik.errors.minSalary}></Label>
             ) : null}
 
-
             <Form.Input label="Release Date" fluid id="releaseDate" name="releaseDate" type="date" placeholder="Release Date" onChange={formik.handleChange} onBlur={formik.handleBlur}
                 defaultValue={jobPosting.releaseDate} />
             {formik.touched.releaseDate && formik.errors.releaseDate ? (
                 <Label pointing basic color="red" content={formik.errors.releaseDate}></Label>
             ) : null}
-
 
             <Form.Input label="Application Deadline" fluid id="releaseDate" name="applicationDeadline" type="date" placeholder="Application Deadline" onChange={formik.handleChange} onBlur={formik.handleBlur}
                 defaultValue={jobPosting.applicationDeadline} />
@@ -179,14 +175,11 @@ export default function JobPostingUpdate() {
                 <Label pointing basic color="red" center content={formik.errors.applicationDeadline}></Label>
             ) : null}
 
-
             <Form.Input label="Number Of Position" fluid id="numberOfPosition" name="numberOfPosition" type="text" placeholder="Number Of Position" onChange={formik.handleChange} onBlur={formik.handleBlur}
                 defaultValue={jobPosting.numberOfPosition} />
             {formik.touched.numberOfPosition && formik.errors.numberOfPosition ? (
                 <Label pointing basic color="red" content={formik.errors.numberOfPosition}></Label>
             ) : null}
-
-
 
             <Form.Select
                 fluid
@@ -194,7 +187,7 @@ export default function JobPostingUpdate() {
                 placeholder='Select City'
                 name="cityId"
                 options={citiesOptions}
-                value={formik.values.cityId}
+                value={jobPosting.city?.id}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
                 onBlur={formik.handleBlur}
             />
@@ -202,18 +195,15 @@ export default function JobPostingUpdate() {
                 <Label pointing basic color="red" content={formik.errors.cityId}></Label>
             ) : null}
 
-
-
             <Form.Select
                 fluid
                 label="Working Time"
                 placeholder='Select Working Time'
                 name="workingTimeId"
                 options={workingTimesOptions}
-                value={formik.values.workingTimeId}
+                value={jobPosting.workingTime?.id}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
                 onBlur={formik.handleBlur}
-
             />
             {formik.touched.workingTimeId && formik.errors.workingTimeId ? (
                 <Label pointing basic color="red" content={formik.errors.workingTimeId}></Label>
@@ -226,15 +216,13 @@ export default function JobPostingUpdate() {
                 placeholder='Select Working Type'
                 name="workingTypeId"
                 options={workingTypesOptions}
-                value={formik.values.workingTypeId}
+                value={jobPosting.workingType?.id}
                 onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
                 onBlur={formik.handleBlur}
-
             />
             {formik.touched.workingTypeId && formik.errors.workingTypeId ? (
                 <Label pointing basic color="red" center aligned content={formik.errors.workingTypeId}></Label>
             ) : null}
-
 
             <Button color="purple" type="submit">
                 <Icon name="edit" />

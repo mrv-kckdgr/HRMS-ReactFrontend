@@ -1,6 +1,6 @@
 import React from 'react'
 import { useField } from 'formik'
-import { FormField, Label} from 'semantic-ui-react'
+import { FormField, Label, Form} from 'semantic-ui-react'
 
 export default function MTextInput({...props}){
     //console.log(props)
@@ -12,7 +12,7 @@ export default function MTextInput({...props}){
     return (
         
             <FormField error={meta.touched && !!meta.error}>
-                <input {...field} {...props}/>
+                <Form.Input {...field} {...props}/>
                 {meta.touched && !!meta.error ? (
                     <Label pointing basic color="red" content={meta.error}></Label>
                 ): null}

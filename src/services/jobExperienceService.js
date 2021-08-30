@@ -22,4 +22,9 @@ export default class JobExperienceService{
         let newUrl = proxy + "jobexperiences/getbyid?id=" + id;
         return axios.get(newUrl);
     }
+
+    updateJobExperienceDto(jobExperience){
+        let newUrl = proxy + "jobexperiences/updateJobExperienceDto";
+        return axios.post(newUrl, jobExperience);
+    }
 }

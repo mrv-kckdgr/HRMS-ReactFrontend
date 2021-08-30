@@ -18,4 +18,25 @@ export default class EmployerService{
         let newUrl = proxy + "employers/add";
         return axios.post(newUrl, employer);
     }
+
+    getByUnapprovedEmployer(){
+        let newUrl = proxy + "employers/getByUnapprovedEmployer";
+        return axios.get(newUrl);
+    }
+
+    approveEmployer(id){
+        let newUrl = proxy + "employers/approveEmployer?id=" + id;
+        return axios.post(newUrl);
+    }
+
+    getById(id){
+        let newUrl = proxy + "employers/getbyid?id=" + id;
+        return axios.get(newUrl);
+    }
+
+    updateEmployer(employer){
+        let newUrl = proxy + "employers/update";
+        return axios.post(newUrl, employer);
+    }
+
 }

@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Header, Icon, Menu, Table } from "semantic-ui-react";
+import { Header, Icon } from "semantic-ui-react";
 import JobPostingService from "../../services/jobPostingService";
-import { Button, Card, Image } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Button, Card } from "semantic-ui-react";
 import FavoriteJobPostingService from "../../services/favoriteJobPostingService";
 import { toast } from "react-toastify";
 import JobPostingSearch from "./JobPostingSearch";
+import JobPostingPageable from "./JobPostingPageable";
 
 export default function JobPostingApprovedList() {
 
-  // arama sayfası için bu kodlar eklendi
   const [values, setFilter] = useState([])
   const filterJobPosting = (values) => {
     setFilter(values);
-    console.log("burası liste", values)
+    console.log("İş ilanları listesi:", values)
+  }
+
+  const [valuesPageable, setPageable] = useState([])
+  const pagebleJobPosting = (valuesPageable) => {
+    setPageable(valuesPageable);
+    console.log("İş ilanları listesi: ", valuesPageable)
   }
 
   const [jobPostings, setJobPostings] = useState([]);
@@ -37,6 +42,15 @@ export default function JobPostingApprovedList() {
   }, [values])
 
 
+  useEffect(() => {
+    let pageNo = valuesPageable.pageNo;
+    let pageSize = valuesPageable.pageSize;
+    let jobPostingService = new JobPostingService();
+    jobPostingService.getAllPageableJobPostings(pageNo, pageSize)
+      .then((result) => setJobPostings(result.data.data));
+  }, [valuesPageable])
+
+
   function addFavoriteJobPosting(id) {
     let favoriteJobPostingService = new FavoriteJobPostingService();
     let candidateId = 4;
@@ -50,13 +64,25 @@ export default function JobPostingApprovedList() {
       })
 
   }
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const [jobPostingsPerPage] = useState(10)
+
+  // Get current jobPostings
+  const indexOfLastJobPosting = currentPage * jobPostingsPerPage;
+  const indexOfFirstJobPosting = indexOfLastJobPosting - jobPostingsPerPage;
+  const currentJobPostings = jobPostings.slice(indexOfFirstJobPosting, indexOfLastJobPosting)
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber)
   return (
     <div>
+      <JobPostingSearch filterJobPosting={filterJobPosting} />
+
+      <JobPostingPageable pagebleJobPosting={pagebleJobPosting} totalJobPostings={jobPostings.length} paginate={paginate} />
+
       <Header as='h3' block color="orange">
         Approved Job Postings
       </Header>
-
-      <JobPostingSearch filterJobPosting={filterJobPosting} />
 
       {jobPostings.map((jobPosting) => (
 

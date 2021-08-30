@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, Icon, Image } from 'semantic-ui-react'
+import { Button, Card, Icon, Image, Header } from 'semantic-ui-react'
 import EmployeeService from "../../services/employeeService";
 import { useEffect } from "react/cjs/react.development";
 import { Link } from "react-router-dom";
@@ -15,9 +15,10 @@ export default function EmployeeList() {
     }, [])
     return (
         <div>
+            <Header as='h3' block color="green">
+                Approved Employers
+            </Header>
             {employees.map((employee) => (
-
-
                 <Card>
                     <Image src='/images/avatar/large/matthew.png' wrapped ui={false} />
                     <Card.Content>
@@ -39,6 +40,11 @@ export default function EmployeeList() {
                     </Card.Content>
                 </Card>
             ))}
+        
+        
+            <Header as='h3' block color="blue">
+                Unapproved Employers
+            </Header>
         </div>
     )
 }

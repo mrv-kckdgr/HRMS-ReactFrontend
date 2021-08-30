@@ -12,7 +12,7 @@ export default function JobExperienceUpdate() {
 
     let { id } = useParams()
 
-    const [jobExperience, setJobExperience] = useState({})
+    const [jobExperience, setJobExperience] = useState({ })
 
     useEffect(() => {
         let jobExperienceService = new JobExperienceService();
@@ -54,9 +54,9 @@ export default function JobExperienceUpdate() {
 
         let jobExperienceService = new JobExperienceService();
 
-        jobExperienceService.addJobExperienceDto(values)
+        jobExperienceService.updateJobExperienceDto(values)
             .then(result => {
-                toast.success("Job Experience has been successfully added.")
+                toast.success("Job Experience has been successfully updated.")
                 console.log(result);
                 console.log(result.data);
                 console.log("başarılı")
@@ -91,8 +91,7 @@ export default function JobExperienceUpdate() {
                     placeholder='Select Job Position'
                     name="jobPositionId"
                     options={jobPositionsOptions}
-                    //defaultValue={jobExperience.jobPosition.id}
-                    //defaultValue={jobExperience.jobPosition.id}
+                    //defaultValue={jobExperience.jobPosition.id}                    
                     value={jobExperience.jobPosition.id}
                     onChange={(e, { name, value }) => formik.setFieldValue(name, value)}
 

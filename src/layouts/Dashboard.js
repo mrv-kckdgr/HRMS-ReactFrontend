@@ -36,6 +36,8 @@ import JobExperienceUpdate from "../pages/JobExperience/JobExperienceUpdate";
 import SignInForm from "../pages/SignInForm";
 import JobPostingApprovedList from "../pages/JobPosting/JobPostingApprovedList";
 import JobPostingUpdate from "../pages/JobPosting/JobPostingUpdate";
+import EmployerUpdate from "../pages/Employer/EmployerUpdate";
+import AllEmployerList from "../pages/Employer/AllEmployerList";
 
 export default function Dashboard() {
   return (
@@ -60,6 +62,7 @@ export default function Dashboard() {
             <Route path="/employer/home" component={JobPostingUnapprovedList} />
             <Route path="/employer/add" component={EmployerAdd} />
             <Route path="/employer/employer-list" component={EmployerList} />
+            <Route path="/employer/employer-update/:id" component={EmployerUpdate} />
 
             {/* Employee */}
             <Route path="/employee/employee-login" component={EmployeeSignInForm} />
@@ -68,6 +71,7 @@ export default function Dashboard() {
             <Route path="/employee/add" component={EmployeeAdd} />
             <Route path="/employee/update/:id" component={EmployeeUpdate} />
             <Route path="/employee/jobPosting-update/:id" component={JobPostingUpdate} />
+            <Route path="/employee/employer-list" component={AllEmployerList} />
 
 
             {/* Candidate */}
@@ -111,7 +115,7 @@ export default function Dashboard() {
 
 
             {/* Language */}
-            <Route path="/language/update" component={LanguageUpdate} />
+            <Route path="/language/update" component={LanguageUpdate} />           
 
           </Grid.Column>
         </Grid.Row>
