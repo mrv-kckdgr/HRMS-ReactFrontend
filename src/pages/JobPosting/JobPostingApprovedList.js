@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Header, Icon } from "semantic-ui-react";
+import { Header, Icon, Pagination, Button, Card } from "semantic-ui-react";
 import JobPostingService from "../../services/jobPostingService";
-import { Button, Card } from "semantic-ui-react";
 import FavoriteJobPostingService from "../../services/favoriteJobPostingService";
 import { toast } from "react-toastify";
 import JobPostingSearch from "./JobPostingSearch";
@@ -66,25 +65,40 @@ export default function JobPostingApprovedList() {
   }
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [jobPostingsPerPage] = useState(10)
+  const [jobPostingsPerPage, setJobAdvertsPerPage] = useState(10)
+  //const [jobAdvertsPerPage, setJobAdvertsPerPage] = useState(10);
+  //jobAdvertsPerPage in yanına set'i de ekleyin yani
 
   // Get current jobPostings
   const indexOfLastJobPosting = currentPage * jobPostingsPerPage;
   const indexOfFirstJobPosting = indexOfLastJobPosting - jobPostingsPerPage;
   const currentJobPostings = jobPostings.slice(indexOfFirstJobPosting, indexOfLastJobPosting)
+  const totalPages = Math.ceil(jobPostings.length / jobPostingsPerPage);
+  console.log(currentJobPostings)
+
+  //   const handleJobAdvPerPageMenuClick = (number) => {
+  //     if (number === jobAdvertsPerPage) return
+  //     setCurrentPage(1)
+  //     setJobAdvertsPerPage(number)
+  // }
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
   return (
     <div>
       <JobPostingSearch filterJobPosting={filterJobPosting} />
 
-      <JobPostingPageable pagebleJobPosting={pagebleJobPosting} totalJobPostings={jobPostings.length} paginate={paginate} />
+      {/* <JobPostingPageable totalPages={totalPages} activePage={currentPage} firstItem={indexOfFirstJobPosting} lastItem={indexOfLastJobPosting} /> */}
+
+      <Pagination
+        totalPages={Math.ceil(jobPostings.length / jobPostingsPerPage)} onPageChange={(e, { activePage }) => setCurrentPage(activePage)}
+        activePage={currentPage} secondary pointing firstItem={null} lastItem={null} siblingRange={2}
+      />
 
       <Header as='h3' block color="orange">
         Approved Job Postings
       </Header>
 
-      {jobPostings.map((jobPosting) => (
+      {currentJobPostings.map((jobPosting) => (
 
         <Card.Group>
           <Card fluid>

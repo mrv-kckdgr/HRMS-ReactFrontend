@@ -1,9 +1,29 @@
-import React from 'react';
-import { Button, Container, Segment, Form, Label, Icon, Header, Pagination, PaginationItem } from "semantic-ui-react";
+import React, {useEffect, useState} from 'react';
+import { Button, Container, Segment, Form, Label, Icon, Header, Pagination } from "semantic-ui-react";
 import { useFormik } from 'formik';
 import * as Yup from "yup"
+import JobPostingService from '../../services/jobPostingService';
 
 export default function JobPostingPageable({ pagebleJobPosting, totalJobPostings, paginate}) {
+
+    const [jobPostings, setJobPostings] = useState([]);
+
+  useEffect(() => {
+    let jobPostingService = new JobPostingService();
+    jobPostingService
+      .getByStatus()
+      .then((result) => setJobPostings(result.data.data));
+  }, []);
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const [jobPostingsPerPage, setJobAdvertsPerPage] = useState(10)
+
+
+
+
+
+
+
 
     const pageNumbers = [];
     const validationSchema = Yup.object({
@@ -11,10 +31,10 @@ export default function JobPostingPageable({ pagebleJobPosting, totalJobPostings
         pageSize: Yup.number().required("Page size field is required!"),
     });
 
-    for (let i = 1; i <= Math.ceil(totalJobPostings / pagebleJobPosting.pageNo); i++) {
-        pageNumbers.push(i)
-        console.log(pageNumbers)
-    }
+    // for (let i = 1; i <= Math.ceil(totalJobPostings / pagebleJobPosting.pageNo); i++) {
+    //     pageNumbers.push(i)
+    //     console.log(pageNumbers)
+    // }
 
     const initialValues = {
         pageNo: "",
@@ -43,7 +63,10 @@ export default function JobPostingPageable({ pagebleJobPosting, totalJobPostings
     return (
         <div>
             <div>
-           
+            {/* <Pagination
+        totalPages={Math.ceil(jobPostings.length / jobPostingsPerPage)} onPageChange={(e, { activePage }) => setCurrentPage(activePage)}
+        activePage={currentPage} secondary pointing firstItem={null} lastItem={null} siblingRange={2}
+      /> */}
             </div>
             <form
                 onSubmit={formik.handleSubmit}>
@@ -83,6 +106,9 @@ export default function JobPostingPageable({ pagebleJobPosting, totalJobPostings
                     </Container>
                 </Segment>
             </form>
+
+            
+        
         </div>
     )
 }

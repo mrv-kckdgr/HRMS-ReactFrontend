@@ -59,7 +59,7 @@ export default function Dashboard() {
             <Route exact path="/employer/job-posting-list/:id" component={JobPostingDetail} />
             <Route path="/employer/job-posting/add" component={JobPostingAdd} />
             <Route path="/employer/employer-login" component={EmployerSignInForm} />
-            <Route path="/employer/home" component={JobPostingUnapprovedList} />
+            <Route path="/employer/home" component={JobPostingApprovedList} />
             <Route path="/employer/add" component={EmployerAdd} />
             <Route path="/employer/employer-list" component={EmployerList} />
             <Route path="/employer/employer-update/:id" component={EmployerUpdate} />

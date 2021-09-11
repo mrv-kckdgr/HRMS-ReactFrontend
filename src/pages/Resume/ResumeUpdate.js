@@ -88,7 +88,7 @@ export default function ResumeUpdate() {
                 {languages.map((e) => (
                     <Item>
                         <Item.Content>
-                            <Icon name="hospital" color="blue" size="large" />
+                            <Icon name="language" color="blue" size="large" />
                             <Item.Header as='a'>Language Name: {e.languageName}</Item.Header>
                             <Item.Description>Language Level: {e.languageLevel === "1" ? <Icon name="star" color="orange" />
                                 : e.languageLevel === "2" ? <div floated><Icon name="star" color="orange" /><Icon name="star" color="orange" /></div>
